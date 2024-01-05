@@ -41,7 +41,7 @@ export function sshUploadFile(ssh, data) {
     // 0 上传前端文件
     let localFile = ''
     if (data.type.toString() === '0') {
-      localFile = folderPath + '\\' + data.name + '\\' + 'dist'
+      localFile = folderPath + '/' + data.name + '/' + 'dist'
       const stdoutRes = await ssh.execCommand('if [ -d "$HOME/' + data.deploy + '" ]; then echo "true"; else echo "false"; fi');
       if(!stdoutRes.stdout) {
         await ssh.execCommand(`mkdir -p $HOME/${data.deploy}`);
@@ -54,7 +54,7 @@ export function sshUploadFile(ssh, data) {
       }
       await ssh.dispose();
     } else if (data.type.toString() === '1') {
-      localFile = folderPath + '\\' + data.name + '\\' + 'target' + '\\' + data.name + '.jar'
+      localFile = folderPath + '/' + data.name + '/' + 'target' + '/' + data.name + '.jar'
       await ssh.execCommand(`mkdir -p $HOME/${data.deploy};cd $HOME/${data.deploy};touch ${data.name}.jar`);
       ssh.putFile(localFile, `${data.deploy}/${data.name}.jar`).then(() => {
         resolve('文件上传完成')

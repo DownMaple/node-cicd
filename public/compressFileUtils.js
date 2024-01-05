@@ -7,16 +7,16 @@ const __dirname = path.dirname(__filename);
 const folderPath = path.resolve(__dirname, '../project')
 export function compressVueFile(name) {
   return new Promise((resolve, reject) => {
-    if (!fs.existsSync(folderPath + '\\' + name + '\\dist')) {
+    if (!fs.existsSync(folderPath + '/' + name + '/dist')) {
       reject('可部署文件不存在')
     } else {
       console.log("开始压缩文件")
       const archive = new Archiver('zip', { zlib: { level: 9 } })
-      const output = fs.createWriteStream(folderPath + '\\' + name + '\\dist.zip')
+      const output = fs.createWriteStream(folderPath + '/' + name + '/dist.zip')
       
       
       archive.pipe(output)
-      archive.directory(folderPath + '\\' + name + '\\dist', 'new-dist')
+      archive.directory(folderPath + '/' + name + '/dist', 'new-dist')
       // 完成文件追加 确保写入流完成
       archive.finalize().then(res => {
         resolve({

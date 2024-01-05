@@ -16,9 +16,9 @@ const folderPath = path.resolve(__dirname, '../project')
  */
 export default function (title,branch,url) {
   return new Promise((resolve, reject) => {
-    if (!fs.existsSync(folderPath + '\\' + title)) {
+    if (!fs.existsSync(folderPath + '/' + title)) {
       // 因为 git 克隆会创建 对应名称文件夹， 所以这里直接克隆就可以了
-      // fs.mkdirSync(folderPath + '\\' + title);
+      // fs.mkdirSync(folderPath + '/' + title);
       const git = new GitUtils(folderPath)
       git.clone(url,branch).then(() => {
         resolve("克隆完成:" + title)
@@ -27,7 +27,7 @@ export default function (title,branch,url) {
         reject("克隆失败:" + err.toString())
       })
     } else {
-      const git = new GitUtils(folderPath + '\\' + title)
+      const git = new GitUtils(folderPath + '/' + title)
       git.pull(branch).then(() => {
         resolve("已拉取：" + title)
       }).catch((err) => {

@@ -8,10 +8,12 @@ import buildUtils from './buildUtils.js'
 
 export default function (name,type) {
   return new Promise((resolve, reject) => {
-    if (!fs.existsSync(folderPath + '\\' + name)) {
+    console.log(folderPath + '/' + name)
+    console.log(fs.existsSync(folderPath + '/' + name))
+    if (!fs.existsSync(folderPath + '/' + name)) {
       reject('项目不存在')
     } else {
-      const codeBuildCmd = new buildUtils(folderPath + '\\' + name)
+      const codeBuildCmd = new buildUtils(folderPath + '/' + name)
       if(type.toString() === '0') {   // 前端项目 npm 构建
         codeBuildCmd.npmInstall().then(() => {
           // console.log('项目：' + name +'初始化成功')
