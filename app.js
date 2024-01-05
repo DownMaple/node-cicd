@@ -4,6 +4,16 @@ const app = express()
 import joi from 'joi'
 import cors from 'cors'
 
+import fs from 'fs'
+
+const path = './project';
+// 检查是否存在project文件夹
+const exists = fs.existsSync(path);
+if (!exists) {
+  // 如果不存在则创建一个
+  fs.mkdirSync(path);
+}
+
 // 解决跨域问题
 app.use(cors())
 app.use(express.json())
