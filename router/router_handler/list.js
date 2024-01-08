@@ -3,6 +3,9 @@ import cloneGit from '../../public/cloneGit.js'
 import buildCode from '../../public/buildCode.js'
 import { ssh, sshConnect, sshUploadFile } from '../../public/sshUtils.js'
 import { updateBuildState, updateDeployState, updateState } from './syncDbUpdate.js'
+import req from 'express/lib/request.js'
+import res from 'express/lib/response.js'
+import { getNowDate } from '../../public/getNowDate.js'
 
 /**
  * 获取 可操作项目列表
@@ -159,4 +162,55 @@ export const deployFileAPI = (req, res) => {
     }
   })
   
+}
+
+/**
+ * 保存或 更新 项目信息
+ * @param req
+ * @param res
+ */
+export const saveCodeAPI = (req, res) => {
+  if (req.body.id === '' || req.body.id === 0) {
+    db.query('INSERT INTO sys_cicd SET title = ?, name =?, branch = ?,num = 0,  git = ?,deploy = ?, type = ?, username = ?, password = ?, host = ?, port = ?, del = 0,state = 0, state_str = "代码未克隆" , create_time =? ',
+      [req.body.title, req.body.name, req.body.branch, req.body.git, req.body.deploy, req.body.type, req.body.username, req.body.password, req.body.host, req.body.port , getNowDate() ]
+      , (err, result) => {
+        if (err) return console.log(err.message)
+        res.send({
+          code: 200,
+          message: '保存成功',
+        })
+    })
+  } else {
+    db.query('UPDATE sys_cicd SET title =?, name =?, branch =?, git =?,deploy =?, type =?, username =?, password =?, host =?, port =?, del = 0 WHERE id =?',
+      [req.body.title, req.body.name, req.body.branch, req.body.git, req.body.deploy, req.body.type, req.body.username, req.body.password, req.body.host, req.body.port, req.body.id]
+      , (err, result) => {
+        if (err) return console.log(err.message)
+        res.send({
+          code: 200,
+          message: '修改成功',
+        })
+    })
+  }
+}
+
+/**
+ * 删除项目
+ * @param req
+ * @param res
+ */
+export const deleteCodeAPI = (req, res) => {
+  if (!req.body.id) {
+    res.send({
+      code: 99,
+      message: '请携带正确的项目编号：id',
+    })
+    return
+  }
+  db.query('UPDATE sys_cicd SET del = 1 WHERE id =?', req.body.id, (err, result) => {
+    if (err) return console.log(err.message)
+    res.send({
+      code: 200,
+      message: '删除成功',
+    })
+  })
 }

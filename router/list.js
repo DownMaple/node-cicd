@@ -16,9 +16,8 @@ router.get('/build', userHandler.buildCodeAPI)
 
 // 部署项目
 router.get('/deploy', userHandler.deployFileAPI)
-//新增、编辑项目
-// router.post('/save', userHandler.saveCodeAPI)
+// 新增、编辑项目
+router.post('/save', userHandler.saveCodeAPI)
 //删除项目
-// router.post('/delete', userHandler.deleteCodeAPI)
-
+router.post('/delete', userHandler.deleteCodeAPI)
 export default router
