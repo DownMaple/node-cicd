@@ -26,7 +26,7 @@ app.use(express.urlencoded({extended:false}))
 app.use((req, res, next) => {
   res.cc = (err,status = 1) =>{
     res.send({
-      status,
+      code: status,
       // 状态描述，判断 err 是 错误对象还是 字符串
       message:err instanceof Error ? err.message : err
     })
@@ -34,7 +34,7 @@ app.use((req, res, next) => {
   next()
 })
 // 托管静态资源文件
-app.use('/uploads', express.static('./uploads'))
+// app.use('/uploads', express.static('./uploads'))
 
 
 /**
@@ -44,7 +44,6 @@ app.use('/uploads', express.static('./uploads'))
 import listRouter from './router/list.js'
 app.use('/cicd',listRouter)
 app.use((req, res, next) => {
-  console.log("app.js, router")
   res.send({
     code: 200,
     message: '成功',

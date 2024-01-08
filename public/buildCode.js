@@ -6,15 +6,21 @@ const __dirname = path.dirname(__filename);
 const folderPath = path.resolve(__dirname, '../project')
 import buildUtils from './buildUtils.js'
 
+/**
+ * 构建代码  请在代码构建前，对当前项目运行环境 是否存在 node、npm、maven 等做检查
+ * @param name
+ * @param type
+ * @returns {Promise<unknown>}
+ */
 export default function (name,type) {
   return new Promise((resolve, reject) => {
-    console.log(folderPath + '/' + name)
-    console.log(fs.existsSync(folderPath + '/' + name))
+    // 判断项目目录是否存在
     if (!fs.existsSync(folderPath + '/' + name)) {
       reject('项目不存在')
     } else {
       const codeBuildCmd = new buildUtils(folderPath + '/' + name)
-      if(type.toString() === '0') {   // 前端项目 npm 构建
+      // 前端项目 npm 构建
+      if(type.toString() === '0') {
         codeBuildCmd.npmInstall().then(() => {
           // console.log('项目：' + name +'初始化成功')
           codeBuildCmd.npmBuild().then(() => {

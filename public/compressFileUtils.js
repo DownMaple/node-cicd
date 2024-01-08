@@ -5,6 +5,12 @@ import { fileURLToPath } from "node:url"
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const folderPath = path.resolve(__dirname, '../project')
+
+/**
+ * 压缩文件，暂时没使用
+ * @param name
+ * @returns {Promise<unknown>}
+ */
 export function compressVueFile(name) {
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(folderPath + '/' + name + '/dist')) {
@@ -13,7 +19,6 @@ export function compressVueFile(name) {
       console.log("开始压缩文件")
       const archive = new Archiver('zip', { zlib: { level: 9 } })
       const output = fs.createWriteStream(folderPath + '/' + name + '/dist.zip')
-      
       
       archive.pipe(output)
       archive.directory(folderPath + '/' + name + '/dist', 'new-dist')
