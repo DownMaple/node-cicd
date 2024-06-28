@@ -43,6 +43,8 @@ app.use((req, res, next) => {
 // 导入路由模块
 import listRouter from './router/list.js'
 app.use('/cicd',listRouter)
+import generator from './router/generator.js'
+app.use('/generator', generator )
 app.use((req, res, next) => {
   res.send({
     code: 200,
